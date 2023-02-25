@@ -1,0 +1,7 @@
+{
+    "description": "The W.CH CH32Vxxx Standard Peripheral Library without OS",
+    "name": "framework-wch-noneos-sdk",
+    "system": "all",
+    "url": "https://www.wch.cn/downloads/",
+    "version": "2.10000.0"
+}
