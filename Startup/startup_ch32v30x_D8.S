@@ -372,7 +372,12 @@ handle_reset:
 	csrw mtvec, t0
 
     jal  SystemInit
+    #if defined(__PIO_BUILD_RT_THREAD__)
+    /* RT-Thread has special entry point, it will call our main() later */
+	la t0, entry
+    #else
 	la t0, main
+    #endif
 	csrw mepc, t0
 	mret
 
