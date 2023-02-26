@@ -29,8 +29,11 @@
 #include "ch32v10x_tim.h"
 #include "ch32v10x_usart.h"
 #include "ch32v10x_wwdg.h"
+/* Harmony OS has build error from types defined in USB headers, can't be used together for the moment. */
+#if !defined(__PIO_BUILD_HARMONY_LITEOS__)
 #include "ch32v10x_usb.h"
 #include "ch32v10x_usb_host.h"
+#endif
 #include "ch32v10x_misc.h"
 
 
