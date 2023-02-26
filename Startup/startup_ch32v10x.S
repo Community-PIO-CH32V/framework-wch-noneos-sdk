@@ -219,7 +219,7 @@ handle_reset:
 	addi a0, a0, 4
 	bltu a0, a1, 1b
 2:
-    #if defined(__PIO_BUILD_FREERTOS__) || defined(__PIO_BUILD_HARMONY_LITEOS__)  
+    #if defined(__PIO_BUILD_FREERTOS__) || defined(__PIO_BUILD_HARMONY_LITEOS__) || defined(__PIO_BUILD_RT_THREAD__)  
   	li t0, 0x1800
   	csrs mstatus, t0
     #else
@@ -232,7 +232,12 @@ handle_reset:
 	csrw mtvec, t0
 
   jal  SystemInit
+  #if defined(__PIO_BUILD_RT_THREAD__)
+  /* RT-Thread has special entry point, it will call our main() later */
+  la t0, entry
+  #else
 	la t0, main
+  #endif
 	csrw mepc, t0
 	mret
 

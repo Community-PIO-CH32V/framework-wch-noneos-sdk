@@ -36,6 +36,15 @@
 #include "ch32v30x_misc.h"
 #include "ch32v30x_eth.h"
 
+/* RT Thread expects the interrupt header file from the project to be included */
+/* Support both our unified name and the old name */
+#if defined(__PIO_BUILD_RT_THREAD__)
+#if __has_include("ch32v_it.h")
+# include "ch32v_it.h"
+#elif __has_include("ch32v30x_it.h")
+# include "ch32v30x_it.h"
+#endif
+#endif
 
 #endif /* __CH32V30x_CONF_H */
 

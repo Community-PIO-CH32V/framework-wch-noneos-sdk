@@ -369,7 +369,7 @@ handle_reset:
     li t0, 0x1f
     csrw 0xbc0, t0
 
-    #if defined(__PIO_BUILD_FREERTOS__) || defined(__PIO_BUILD_HARMONY_LITEOS__)
+    #if defined(__PIO_BUILD_FREERTOS__) || defined(__PIO_BUILD_HARMONY_LITEOS__) || defined(__PIO_BUILD_RT_THREAD__)
     /* Enable nested and hardware stack */
 	li t0, 0x1f
 	csrw 0x804, t0
@@ -392,7 +392,12 @@ handle_reset:
 	csrw mtvec, t0
 
     jal  SystemInit
+    #if defined(__PIO_BUILD_RT_THREAD__)
+    /* RT-Thread has special entry point, it will call our main() later */
+	la t0, entry
+    #else
 	la t0, main
+    #endif
 	csrw mepc, t0
 	mret
 
