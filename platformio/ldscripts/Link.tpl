@@ -175,6 +175,8 @@ SECTIONS
         PROVIDE(_susrstack = . );
         . = . + __stack_size;
         PROVIDE( _eusrstack = .);
+		/* goes unused for every firmware but FreeRTOS enabled ones */
+		__freertos_irq_stack_top = .;
     } >RAM 
 
 }

@@ -219,9 +219,14 @@ handle_reset:
 	addi a0, a0, 4
 	bltu a0, a1, 1b
 2:
+    #if defined(__PIO_BUILD_FREERTOS__)
+  	li t0, 0x1800
+  	csrs mstatus, t0
+    #else
 	/* enable all interrupt */
   li t0, 0x88
   csrs mstatus, t0
+  #endif
 	la t0, _vector_base
   ori t0, t0, 1
 	csrw mtvec, t0

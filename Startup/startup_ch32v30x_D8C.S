@@ -369,13 +369,23 @@ handle_reset:
     li t0, 0x1f
     csrw 0xbc0, t0
 
+    #if defined(__PIO_BUILD_FREERTOS__)
     /* Enable nested and hardware stack */
+	li t0, 0x1f
+	csrw 0x804, t0
+
+    /* Enable floating point and interrupt */
+    /* Generate the value 0x7880, which are the MPIE, MPP and FS bits to set in mstatus. */
+   	li t0, 0x7800
+   	csrs mstatus, t0
+    #else /* regular */
 	li t0, 0x0b
 	csrw 0x804, t0
 
     /* Enable floating point and interrupt */
    	li t0, 0x6088           
    	csrs mstatus, t0
+    #endif
 
  	la t0, _vector_base
     ori t0, t0, 3           

@@ -263,6 +263,15 @@ handle_reset:
     li t0, 0x1f
     csrw 0xbc0, t0
 
+    #if defined(__PIO_BUILD_FREERTOS__)
+    /* Enable nested  */
+	li t0, 0x2
+	csrw 0x804, t0
+
+    /* Enable interrupt */
+   	li t0, 0x1800
+   	csrs mstatus, t0
+    #else
     /* Enable nested and hardware stack */
 	li t0, 0x3
 	csrw 0x804, t0
@@ -270,6 +279,7 @@ handle_reset:
     /* Enable interrupt */
    	li t0, 0x88           
    	csrs mstatus, t0
+    #endif
 
  	la t0, _vector_base
     ori t0, t0, 3           
