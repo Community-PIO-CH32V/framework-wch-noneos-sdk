@@ -219,7 +219,7 @@ handle_reset:
 	addi a0, a0, 4
 	bltu a0, a1, 1b
 2:
-    #if defined(__PIO_BUILD_FREERTOS__) || defined(__PIO_BUILD_HARMONY_LITEOS__) || defined(__PIO_BUILD_RT_THREAD__)  
+    #if defined(__PIO_BUILD_FREERTOS__) || defined(__PIO_BUILD_HARMONY_LITEOS__) || defined(__PIO_BUILD_RT_THREAD__) || defined(__PIO_BUILD_TENCENT_OS__)
   	li t0, 0x1800
   	csrs mstatus, t0
     #else
