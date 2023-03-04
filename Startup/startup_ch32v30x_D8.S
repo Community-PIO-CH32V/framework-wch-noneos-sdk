@@ -10,24 +10,24 @@
 * microcontroller manufactured by Nanjing Qinheng Microelectronics.
 *******************************************************************************/
 
-	.section	.init,"ax",@progbits
-	.global	_start
-	.align	1
+    .section	.init,"ax",@progbits
+    .global	_start
+    .align	1
 _start:
-	j	handle_reset
-	.word 0x00000013
-	.word 0x00000013
-	.word 0x00000013
-	.word 0x00000013
-	.word 0x00000013
-	.word 0x00000013
-	.word 0x00000013
-	.word 0x00000013
-	.word 0x00000013
-	.word 0x00000013
-	.word 0x00000013
-	.word 0x00000013
-	.word 0x00100073
+    j	handle_reset
+    .word 0x00000013
+    .word 0x00000013
+    .word 0x00000013
+    .word 0x00000013
+    .word 0x00000013
+    .word 0x00000013
+    .word 0x00000013
+    .word 0x00000013
+    .word 0x00000013
+    .word 0x00000013
+    .word 0x00000013
+    .word 0x00000013
+    .word 0x00100073
     .section    .vector,"ax",@progbits
     .align  1
 _vector_base:
@@ -314,72 +314,82 @@ DMA2_Channel10_IRQHandler:  1:  j 1b
 DMA2_Channel11_IRQHandler:  1:  j 1b
 
 
-	.section	.text.handle_reset,"ax",@progbits
-	.weak	handle_reset
-	.align	1
+    .section	.text.handle_reset,"ax",@progbits
+    .weak	handle_reset
+    .align	1
 handle_reset:
 .option push
 .option	norelax
-	la gp, __global_pointer$
+    la gp, __global_pointer$
 .option	pop
 1:
-	la sp, _eusrstack
+    la sp, _eusrstack
 2:
-	/* Load data section from flash to RAM */
-	la a0, _data_lma
-	la a1, _data_vma
-	la a2, _edata
-	bgeu a1, a2, 2f
+    /* Load data section from flash to RAM */
+    la a0, _data_lma
+    la a1, _data_vma
+    la a2, _edata
+    bgeu a1, a2, 2f
 1:
-	lw t0, (a0)
-	sw t0, (a1)
-	addi a0, a0, 4
-	addi a1, a1, 4
-	bltu a1, a2, 1b
+    lw t0, (a0)
+    sw t0, (a1)
+    addi a0, a0, 4
+    addi a1, a1, 4
+    bltu a1, a2, 1b
 2:
-	/* Clear bss section */
-	la a0, _sbss
-	la a1, _ebss
-	bgeu a0, a1, 2f
+    /* Clear bss section */
+    la a0, _sbss
+    la a1, _ebss
+    bgeu a0, a1, 2f
 1:
-	sw zero, (a0)
-	addi a0, a0, 4
-	bltu a0, a1, 1b
+    sw zero, (a0)
+    addi a0, a0, 4
+    bltu a0, a1, 1b
 2:
     li t0, 0x1f
     csrw 0xbc0, t0
 
     #if defined(__PIO_BUILD_FREERTOS__) || defined(__PIO_BUILD_HARMONY_LITEOS__) || defined(__PIO_BUILD_RT_THREAD__) || defined(__PIO_BUILD_TENCENT_OS__)
     /* Enable nested and hardware stack */
-	li t0, 0x1f
-	csrw 0x804, t0
+    li t0, 0x1f
+    csrw 0x804, t0
 
     /* Enable floating point and interrupt */
     /* Generate the value 0x7880, which are the MPIE, MPP and FS bits to set in mstatus. */
-   	li t0, 0x7800
-   	csrs mstatus, t0
+    li t0, 0x7800
+    csrs mstatus, t0
     #else /* regular */
-	li t0, 0x0b
-	csrw 0x804, t0
+    li t0, 0x0b
+    csrw 0x804, t0
 
     /* Enable floating point and interrupt */
-   	li t0, 0x6088
-   	csrs mstatus, t0
+    li t0, 0x6088
+    csrs mstatus, t0
     #endif
 
- 	la t0, _vector_base
+    la t0, _vector_base
     ori t0, t0, 3
-	csrw mtvec, t0
+    csrw mtvec, t0
+
+    #if defined(__PIO_CPP_SUPPORT__)
+    /* register fini (destructor array) call at exit if wanted (bloats up RAM+Flash) */
+    #if defined(__PIO_CPP_CALL_FINI__)
+    la a0,__libc_fini_array
+    call atexit
+    #endif
+    /* call into C++ constructors now */
+    call __libc_init_array
+    #endif
 
     jal  SystemInit
     #if defined(__PIO_BUILD_RT_THREAD__)
     /* RT-Thread has special entry point, it will call our main() later */
-	la t0, entry
+    la t0, entry
     #else
-	la t0, main
+    la t0, main
     #endif
-	csrw mepc, t0
-	mret
+    csrw mepc, t0
+    mret
 
 
 
