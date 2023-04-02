@@ -35,7 +35,7 @@
 
 /* RT Thread expects the interrupt header file from the project to be included */
 /* Support both our unified name and the old name */
-#if defined(__PIO_BUILD_RT_THREAD__)
+#if defined(__PIO_BUILD_RT_THREAD__) || defined(__PIO_INCLUDE_IT_H__)
 #if __has_include("ch32v_it.h")
 # include "ch32v_it.h"
 #elif __has_include("ch32v20x_it.h")
