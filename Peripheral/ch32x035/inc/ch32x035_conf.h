@@ -6,7 +6,7 @@
  * Description        : Library configuration file.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
-* Attention: This software (modified or not) and binary are used for
+* Attention: This software (modified or not) and binary are used for 
 * microcontroller manufactured by Nanjing Qinheng Microelectronics.
 *******************************************************************************/
 #ifndef __CH32X035_CONF_H
@@ -27,6 +27,15 @@
 #include "ch32x035_tim.h"
 #include "ch32x035_usart.h"
 #include "ch32x035_wwdg.h"
+//#include "ch32x035_it.h"
 #include "ch32x035_misc.h"
+#include "ch32x035_usbpd.h"
 
-#endif /* __CH32V035_CONF_H */
+
+
+#endif
+
+
+	
+	
+	
