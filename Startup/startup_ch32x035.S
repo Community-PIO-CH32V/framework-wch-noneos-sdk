@@ -208,19 +208,45 @@ handle_reset:
 /* Configure pipelining and instruction prediction */
     li t0, 0x1f
     csrw 0xbc0, t0
+
+    #if defined(__PIO_BUILD_FREERTOS__) || defined(__PIO_BUILD_HARMONY_LITEOS__) || defined(__PIO_BUILD_RT_THREAD__) || defined(__PIO_BUILD_TENCENT_OS__)
+/* Enable interrupt nesting and hardware stack */
+	li t0, 0x2
+	csrw 0x804, t0
+/* Enable global interrupt and configure privileged mode */
+   	li t0, 0x1800           
+   	csrs mstatus, t0
+    #else /* regular */
 /* Enable interrupt nesting and hardware stack */
 	li t0, 0x3
 	csrw 0x804, t0
 /* Enable global interrupt and configure privileged mode */
    	li t0, 0x88           
    	csrs mstatus, t0
+    #endif
+
 /* Configure the interrupt vector table recognition mode and entry address mode */
  	la t0, _vector_base
     ori t0, t0, 3           
 	csrw mtvec, t0
 
+    #if defined(__PIO_CPP_SUPPORT__)
+    /* register fini (destructor array) call at exit if wanted (bloats up RAM+Flash) */
+    #if defined(__PIO_CPP_CALL_FINI__)
+    la a0,__libc_fini_array
+    call atexit
+    #endif
+    /* call into C++ constructors now */
+    call __libc_init_array
+    #endif
+
     jal  SystemInit
-	la t0, main
+    #if defined(__PIO_BUILD_RT_THREAD__)
+    /* RT-Thread has special entry point, it will call our main() later */
+    la t0, entry
+    #else
+    la t0, main
+    #endif
 	csrw mepc, t0
 	mret
 
