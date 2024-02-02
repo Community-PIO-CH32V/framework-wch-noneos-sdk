@@ -29,7 +29,11 @@
 #include "ch32x035_wwdg.h"
 //#include "ch32x035_it.h"
 #include "ch32x035_misc.h"
+// Including USBPD causes a whole slew of errors within LiteOS compilation,
+// so disable that for now.
+#if !defined(__PIO_BUILD_HARMONY_LITEOS__)
 #include "ch32x035_usbpd.h"
+#endif
 
 
 
