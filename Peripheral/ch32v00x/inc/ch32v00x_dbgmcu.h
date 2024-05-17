@@ -27,6 +27,10 @@ extern "C" {
 
 uint32_t DBGMCU_GetREVID(void);
 uint32_t DBGMCU_GetDEVID(void);
+uint32_t DBGMCU_GetMCUUID1(void);
+uint32_t DBGMCU_GetMCUUID2(void);
+uint32_t DBGMCU_GetMCUUID3(void);
+uint16_t DBGMCU_GetMCUFlashSize(void);
 uint32_t __get_DEBUG_CR(void);
 void __set_DEBUG_CR(uint32_t value);
 void DBGMCU_Config(uint32_t DBGMCU_Periph, FunctionalState NewState);
