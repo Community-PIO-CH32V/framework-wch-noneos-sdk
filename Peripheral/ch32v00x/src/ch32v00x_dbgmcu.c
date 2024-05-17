@@ -39,6 +39,54 @@ uint32_t DBGMCU_GetDEVID(void)
 }
 
 /*********************************************************************
+ * @fn      DBGMCU_GetMCUUID1
+ *
+ * @brief   Returns the 0-31 digits of UID.
+ *
+ * @return  Device unique ID.
+ */
+uint32_t DBGMCU_GetMCUUID1(void)
+{
+    return(*(uint32_t *)0x1FFFF7E8);
+}
+
+/*********************************************************************
+ * @fn      DBGMCU_GetMCUUID2
+ *
+ * @brief   Returns the 32-63 digits of UID.
+ *
+ * @return  Device unique ID.
+ */
+uint32_t DBGMCU_GetMCUUID2(void)
+{
+    return(*(uint32_t *)0x1FFFF7EC);
+}
+
+/*********************************************************************
+ * @fn      DBGMCU_GetMCUUID3
+ *
+ * @brief   Returns the 64-95 digits of UID.
+ *
+ * @return  Device unique ID.
+ */
+uint32_t DBGMCU_GetMCUUID3(void)
+{
+    return(*(uint32_t *)0x1FFFF7F0);
+}
+
+/*********************************************************************
+ * @fn      DBGMCU_GetMCUFlashSize
+ *
+ * @brief   Returns flash capacity in Kbyte (Example: 0x0080 = 128 Kb)
+ *
+ * @return  Device flash capacity.
+ */
+uint16_t DBGMCU_GetMCUFlashSize(void)
+{
+    return(*(uint16_t *)0x1FFFF7E0);
+}
+
+/*********************************************************************
  * @fn      __get_DEBUG_CR
  *
  * @brief   Return the DEBUGE Control Register
