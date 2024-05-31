@@ -270,7 +270,7 @@ handle_reset:
 
     /* Enable interrupt */
     li t0, 0x1800
-    csrs mstatus, t0
+    csrw mstatus, t0
     #else
     /* Enable nested and hardware stack */
     li t0, 0x3
@@ -278,7 +278,7 @@ handle_reset:
 
     /* Enable interrupt */
     li t0, 0x88           
-    csrs mstatus, t0
+    csrw mstatus, t0
     #endif
 
     la t0, _vector_base
