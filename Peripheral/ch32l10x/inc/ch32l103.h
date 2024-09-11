@@ -16,6 +16,11 @@
 extern "C" {
 #endif
 
+extern uint32_t OPA_Trim;
+extern uint16_t ADC_Trim;
+extern uint32_t TS_Val;
+extern uint32_t CHIPID;
+
 #define HSE_VALUE    ((uint32_t)8000000) /* Value of the External oscillator in Hz */
 
 /* In the following line adjust the External High Speed oscillator (HSE) Startup Timeout value */

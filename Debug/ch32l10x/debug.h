@@ -30,11 +30,6 @@ extern "C" {
 #define DEBUG   DEBUG_UART1
 #endif
 
-extern uint32_t OPA_Trim;
-extern uint16_t ADC_Trim;
-extern uint32_t TS_Val;
-extern uint32_t CHIPID;
-
 void Delay_Init(void);
 void Delay_Us(uint32_t n);
 void Delay_Ms(uint32_t n);
