@@ -16,6 +16,8 @@
 extern "C" {
 #endif
 
+#include <stdint.h>
+
 extern uint32_t OPA_Trim;
 extern uint16_t ADC_Trim;
 extern uint32_t TS_Val;
