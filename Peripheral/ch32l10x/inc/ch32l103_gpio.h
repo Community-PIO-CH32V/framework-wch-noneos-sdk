@@ -19,6 +19,11 @@ extern "C" {
 
 #include "ch32l103.h"
 
+extern uint32_t OPA_Trim;
+extern uint16_t ADC_Trim;
+extern uint32_t TS_Val;
+extern uint32_t CHIPID;
+
 /* Output Maximum frequency selection */
 typedef enum
 {
