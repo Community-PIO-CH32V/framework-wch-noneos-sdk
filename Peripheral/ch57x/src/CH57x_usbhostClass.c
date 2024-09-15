@@ -711,7 +711,7 @@ uint8_t CtrlGetHIDDeviceReport(uint8_t infc)
     uint8_t s;
     uint8_t len;
 
-    CopySetupReqPkg((int8_t *)SetupSetHIDIdle);
+    CopySetupReqPkg(SetupSetHIDIdle);
     pSetupReq->wIndex = infc;
     s = HostCtrlTransfer(Com_Buffer, &len); // 执行控制传输
     if(s != ERR_SUCCESS)
@@ -719,7 +719,7 @@ uint8_t CtrlGetHIDDeviceReport(uint8_t infc)
         return (s);
     }
 
-    CopySetupReqPkg((int8_t *)SetupGetHIDDevReport);
+    CopySetupReqPkg(SetupGetHIDDevReport);
     pSetupReq->wIndex = infc;
     s = HostCtrlTransfer(Com_Buffer, &len); // 执行控制传输
     if(s != ERR_SUCCESS)
@@ -744,7 +744,7 @@ uint8_t CtrlGetHubDescr(void)
     uint8_t s;
     uint8_t len;
 
-    CopySetupReqPkg((int8_t *)SetupGetHubDescr);
+    CopySetupReqPkg(SetupGetHubDescr);
     s = HostCtrlTransfer(Com_Buffer, &len); // 执行控制传输
     if(s != ERR_SUCCESS)
     {
