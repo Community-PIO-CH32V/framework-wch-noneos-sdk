@@ -45,8 +45,6 @@
 #endif
 #endif
 
-// Fixes ch32x05_pwr.c compilation by declaring these functions
-#include "debug.h"
 
 #endif
 

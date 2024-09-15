@@ -11,6 +11,8 @@
 *******************************************************************************/
 #include "ch32x035_pwr.h"
 #include "ch32x035_rcc.h"
+// Fixes ch32x05_pwr.c compilation by declaring these functions
+#include "debug.h"
 
 /* PWR registers bit mask */
 /* CTLR register bit mask */

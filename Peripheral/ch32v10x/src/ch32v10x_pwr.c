@@ -11,6 +11,7 @@
 *******************************************************************************/
 #include "ch32v10x_pwr.h"
 #include "ch32v10x_rcc.h"
+#include "debug.h"
 
 /* PWR registers bit mask */
 /* CTLR register bit mask */
