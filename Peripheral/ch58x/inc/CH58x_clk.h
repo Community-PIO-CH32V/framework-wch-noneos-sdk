@@ -4,8 +4,10 @@
  * Version            : V1.2
  * Date               : 2021/11/17
  * Description
+ *********************************************************************************
  * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
- * SPDX-License-Identifier: Apache-2.0
+ * Attention: This software (modified or not) and binary are used for 
+ * microcontroller manufactured by Nanjing Qinheng Microelectronics.
  *******************************************************************************/
 
 #ifndef __CH58x_CLK_H__
@@ -97,7 +99,8 @@ typedef enum
  */
 typedef enum
 {
-    LSECap_2p = 0,
+    LSECap_2p = 0,  //实际上为12p
+    LSECap_12p = 0,
     LSECap_13p,
     LSECap_14p,
     LSECap_15p,
@@ -163,9 +166,9 @@ typedef enum
 typedef enum
 {
     /* 校准精度越高，耗时越长 */
-    Level_32 = 3, // 用时 1.2ms 1000ppm (32M 主频)  1100ppm (64M 主频)
-    Level_64,     // 用时 2.2ms 800ppm  (32M 主频)  1000ppm (64M 主频)
-    Level_128,    // 用时 4.2ms 600ppm  (32M 主频)  800ppm  (64M 主频)
+    Level_32 = 3, // 用时 1.2ms 1000ppm (32M 主频)  1100ppm (60M 主频)
+    Level_64,     // 用时 2.2ms 800ppm  (32M 主频)  1000ppm (60M 主频)
+    Level_128,    // 用时 4.2ms 600ppm  (32M 主频)  800ppm  (60M 主频)
 
 } Cali_LevelTypeDef;
 

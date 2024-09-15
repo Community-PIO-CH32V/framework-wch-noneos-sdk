@@ -4,8 +4,10 @@
  * Version            : V1.2
  * Date               : 2021/11/17
  * Description
+ *********************************************************************************
  * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
- * SPDX-License-Identifier: Apache-2.0
+ * Attention: This software (modified or not) and binary are used for 
+ * microcontroller manufactured by Nanjing Qinheng Microelectronics.
  *******************************************************************************/
 
 #include "CH58x_common.h"
@@ -24,14 +26,14 @@ signed short ADC_DataCalib_Rough(void) // 采样数据粗调,获取偏差值
     uint16_t i;
     uint32_t sum = 0;
     uint8_t  ch = 0;   // 备份通道
-    uint8_t  ctrl = 0; // 备份控制寄存器
+    uint8_t  cfg = 0;   // 备份
 
     ch = R8_ADC_CHANNEL;
-    ctrl = R8_ADC_CFG;
-    R8_ADC_CFG = 0;
+    cfg = R8_ADC_CFG;
 
     ADC_ChannelCfg(1);                                          // ADC校准通道请选择通道1
-    R8_ADC_CFG |= RB_ADC_OFS_TEST | RB_ADC_POWER_ON | (2 << 4); // 进入测试模式
+    R8_ADC_CFG |= RB_ADC_OFS_TEST; // 进入测试模式
+    R8_ADC_CFG &= ~RB_ADC_DIFF_EN; // 关闭差分
     R8_ADC_CONVERT = RB_ADC_START;
     while(R8_ADC_CONVERT & RB_ADC_START);
     for(i = 0; i < 16; i++)
@@ -41,10 +43,10 @@ signed short ADC_DataCalib_Rough(void) // 采样数据粗调,获取偏差值
         sum += (~R16_ADC_DATA) & RB_ADC_DATA;
     }
     sum = (sum + 8) >> 4;
-    R8_ADC_CFG &= ~RB_ADC_OFS_TEST; // 关闭测试模式
 
+    R8_ADC_CFG = cfg;  // 恢复配置值
     R8_ADC_CHANNEL = ch;
-    R8_ADC_CFG = ctrl;
+
     return (2048 - sum);
 }
 
@@ -124,7 +126,7 @@ void ADC_InterBATSampInit(void)
  */
 void TouchKey_ChSampInit(void)
 {
-    R8_ADC_CFG = RB_ADC_POWER_ON | RB_ADC_BUF_EN | (2 << 4);
+    R8_ADC_CFG = RB_ADC_POWER_ON | RB_ADC_BUF_EN | (1 << 4); // 使用-6dB模式，
     R8_TKEY_CFG |= RB_TKEY_PWR_ON;
 }
 
@@ -193,7 +195,7 @@ void ADC_DMACfg(uint8_t s, uint16_t startAddr, uint16_t endAddr, ADC_DMAModeType
 {
     if(s == DISABLE)
     {
-        R8_ADC_CTRL_DMA &= ~RB_ADC_DMA_ENABLE;
+        R8_ADC_CTRL_DMA &= ~(RB_ADC_DMA_ENABLE | RB_ADC_IE_DMA_END);
     }
     else
     {

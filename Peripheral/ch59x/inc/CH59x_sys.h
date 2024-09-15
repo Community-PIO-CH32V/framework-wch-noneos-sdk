@@ -167,8 +167,6 @@ void mDelayuS(uint16_t t);
  */
 void mDelaymS(uint16_t t);
 
-extern volatile uint32_t IRQ_STA;
-
 /**
  * @brief Enter safe access mode.
  * 
@@ -176,27 +174,13 @@ extern volatile uint32_t IRQ_STA;
  * are in safe mode, and one or more secure registers can be rewritten 
  * within the valid period. The safe mode will be automatically 
  * terminated after the above validity period is exceeded.
+ *  if sys_safe_access_enable() is called,
+ *  you must call sys_safe_access_disable() before call sys_safe_access_enable() again.
  */
- __attribute__((always_inline)) static inline void sys_safe_access_enable(void)
-{
-    if(read_csr(0x800)&0x08)
-    {
-        IRQ_STA = read_csr(0x800);
-        write_csr(0x800, (IRQ_STA&(~0x08)));
-    }
-    SAFEOPERATE;
-    R8_SAFE_ACCESS_SIG = SAFE_ACCESS_SIG1;
-    R8_SAFE_ACCESS_SIG = SAFE_ACCESS_SIG2;
-    SAFEOPERATE;
-}
+#define sys_safe_access_enable()        do{volatile uint32_t mpie_mie;mpie_mie=__risc_v_disable_irq();SAFEOPERATE;\
+                                        R8_SAFE_ACCESS_SIG = SAFE_ACCESS_SIG1;R8_SAFE_ACCESS_SIG = SAFE_ACCESS_SIG2;SAFEOPERATE;
 
-__attribute__((always_inline)) static inline void sys_safe_access_disable(void)
-{
-    R8_SAFE_ACCESS_SIG = 0;
-    write_csr(0x800, read_csr(0x800)|(IRQ_STA&0x08));
-    IRQ_STA = 0;
-    SAFEOPERATE;
-}
+#define sys_safe_access_disable()       R8_SAFE_ACCESS_SIG = 0;__risc_v_enable_irq(mpie_mie);SAFEOPERATE;}while(0)
 
 #ifdef __cplusplus
 }

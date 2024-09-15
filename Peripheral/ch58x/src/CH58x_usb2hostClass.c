@@ -4,8 +4,10 @@
  * Version            : V1.2
  * Date               : 2021/11/17
  * Description
+ *********************************************************************************
  * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
- * SPDX-License-Identifier: Apache-2.0
+ * Attention: This software (modified or not) and binary are used for 
+ * microcontroller manufactured by Nanjing Qinheng Microelectronics.
  *******************************************************************************/
 
 #include "CH58x_common.h"
@@ -256,7 +258,15 @@ uint8_t InitRootU2Device(void)
                     s = CtrlSetUsb2Config(cfg); // 设置USB设备配置
                     if(s == ERR_SUCCESS)
                     {
-                        //	    					Set_Idle( );
+                        s = CtrlGetU2HIDDeviceReport(dv_cls); //获取报表描述符
+                        if(s == ERR_SUCCESS)
+                        {
+                            for(i = 0; i < 64; i++)
+                            {
+                                PRINT("x%02X ", (uint16_t)(Com_Buffer[i]));
+                            }
+                            PRINT("\n");
+                        }
                         //	需保存端点信息以便主程序进行USB传输
                         ThisUsb2Dev.DeviceStatus = ROOT_DEV_SUCCESS;
                         if(if_cls == 1)

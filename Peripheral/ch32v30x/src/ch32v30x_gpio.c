@@ -2,7 +2,7 @@
 * File Name          : ch32v30x_gpio.c
 * Author             : WCH
 * Version            : V1.0.0
-* Date               : 2021/06/06
+* Date               : 2024/05/06
 * Description        : This file provides all the GPIO firmware functions.
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
 * Attention: This software (modified or not) and binary are used for 
@@ -402,6 +402,7 @@ void GPIO_EventOutputCmd(FunctionalState NewState)
  *
  * @param   GPIO_Remap - selects the pin to remap.
  *            GPIO_Remap_SPI1 - SPI1 Alternate Function mapping
+ *            GPIO_Remap_SPI3 - SPI3 Alternate Function mapping(CH32V30X_D8,CH32V30X_D8C)
  *            GPIO_Remap_I2C1 - I2C1 Alternate Function mapping
  *            GPIO_Remap_USART1 - USART1 Alternate Function mapping
  *            GPIO_Remap_USART2 - USART2 Alternate Function mapping
@@ -426,9 +427,7 @@ void GPIO_EventOutputCmd(FunctionalState NewState)
  *            GPIO_Remap_ETH - Ethernet remapping
  *            GPIO_Remap_CAN2 - CAN2 remapping
  *            GPIO_Remap_MII_RMII_SEL - MII or RMII selection
- *            GPIO_Remap_SWJ_NoJTRST - Full SWJ Enabled (JTAG-DP + SW-DP) but without JTRST
- *            GPIO_Remap_SWJ_JTAGDisable - JTAG-DP Disabled and SW-DP Enabled
- *            GPIO_Remap_SWJ_Disable - Full SWJ Disabled (JTAG-DP + SW-DP)
+ *            GPIO_Remap_SWJ_Disable - Full SWJ Disabled 
  *            GPIO_Remap_TIM2ITR1_PTP_SOF - Ethernet PTP output or USB OTG SOF (Start of Frame) connected
  *        to TIM2 Internal Trigger 1 for calibration
  *            GPIO_Remap_TIM2ITR1_PTP_SOF - Ethernet PTP output or USB OTG SOF (Start of Frame)
@@ -680,8 +679,11 @@ void GPIO_IPD_Unused(void)
                                          |GPIO_Pin_12|GPIO_Pin_15;
             GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
             GPIO_Init(GPIOA, &GPIO_InitStructure);
+            GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
+            GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
+            GPIO_Init(GPIOB, &GPIO_InitStructure);
             GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1\
-                                         |GPIO_Pin_2|GPIO_Pin_3\
+                                         |GPIO_Pin_3\
                                          |GPIO_Pin_4|GPIO_Pin_5\
                                          |GPIO_Pin_8|GPIO_Pin_9;
             GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
@@ -788,7 +790,67 @@ void GPIO_IPD_Unused(void)
             GPIO_Init(GPIOE, &GPIO_InitStructure);
             break;
         }
+        case 0x3173B508:     //CH32V317WCU6
+        {
+            GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6|GPIO_Pin_7\
+                                          |GPIO_Pin_8|GPIO_Pin_9;
+            GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+            GPIO_Init(GPIOC, &GPIO_InitStructure);
+            GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9\
+                                          |GPIO_Pin_10|GPIO_Pin_11\
+                                          |GPIO_Pin_12|GPIO_Pin_13\
+                                          |GPIO_Pin_0|GPIO_Pin_1\
+                                          |GPIO_Pin_3|GPIO_Pin_4\
+                                          |GPIO_Pin_5|GPIO_Pin_6\
+                                          |GPIO_Pin_7;
+            GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+            GPIO_Init(GPIOD, &GPIO_InitStructure);
+            GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1|GPIO_Pin_2\
+                                          |GPIO_Pin_3|GPIO_Pin_4\
+                                          |GPIO_Pin_5|GPIO_Pin_6;
+            GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+            GPIO_Init(GPIOE, &GPIO_InitStructure);
+            break;
+        }
+        case 0x3175B508:     //CH32V317TCU6
+        {
+            GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9|GPIO_Pin_10;
+            GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+            GPIO_Init(GPIOA, &GPIO_InitStructure);
+            GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9|GPIO_Pin_10\
+                                          |GPIO_Pin_11;
+            GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+            GPIO_Init(GPIOB, &GPIO_InitStructure);
+            GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1\
+                                          |GPIO_Pin_5|GPIO_Pin_6\
+                                          |GPIO_Pin_7|GPIO_Pin_8\
+                                          |GPIO_Pin_9|GPIO_Pin_10\
+                                          |GPIO_Pin_11|GPIO_Pin_12\
+                                          |GPIO_Pin_13;
+            GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+            GPIO_Init(GPIOC, &GPIO_InitStructure);
+            GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9\
+                                          |GPIO_Pin_10|GPIO_Pin_11\
+                                          |GPIO_Pin_12|GPIO_Pin_13\
+                                          |GPIO_Pin_14|GPIO_Pin_15\
+                                          |GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_2\
+                                          |GPIO_Pin_3|GPIO_Pin_4\
+                                          |GPIO_Pin_5|GPIO_Pin_6\
+                                          |GPIO_Pin_7;
+            GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+            GPIO_Init(GPIOD, &GPIO_InitStructure);
+            GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_2\
+                                          |GPIO_Pin_3|GPIO_Pin_4\
+                                          |GPIO_Pin_5|GPIO_Pin_6;
+            GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+            GPIO_Init(GPIOE, &GPIO_InitStructure);
+            break;
+        }
         case 0x30700508:     //CH32V307VCT6
+        {        
+            break;
+        }
+        case 0x3170B508:     //CH32V317VCT6
         {        
             break;
         }

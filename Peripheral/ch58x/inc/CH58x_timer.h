@@ -4,8 +4,10 @@
  * Version            : V1.2
  * Date               : 2021/11/17
  * Description
+ *********************************************************************************
  * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
- * SPDX-License-Identifier: Apache-2.0
+ * Attention: This software (modified or not) and binary are used for 
+ * microcontroller manufactured by Nanjing Qinheng Microelectronics.
  *******************************************************************************/
 
 #ifndef __CH58x_TIMER_H__
@@ -144,6 +146,16 @@ void TMR0_CapInit(CapModeTypeDef cap);
 #define TMR0_CAPDataCounter()    R8_TMR0_FIFO_COUNT
 
 /**
+ * @brief   关闭 TMR0 PWM输出
+ */
+#define TMR0_PWMDisable()           (R8_TMR0_CTRL_MOD &= ~RB_TMR_OUT_EN)
+
+/**
+ * @brief   开启 TMR0 PWM输出
+ */
+#define TMR0_PWMEnable()           (R8_TMR0_CTRL_MOD |= RB_TMR_OUT_EN)
+
+/**
  * @brief   关闭 TMR0
  */
 #define TMR0_Disable()           (R8_TMR0_CTRL_MOD &= ~RB_TMR_COUNT_EN)
@@ -269,6 +281,16 @@ void TMR1_CapInit(CapModeTypeDef cap);
  * @param   m           - 配置DMA模式
  */
 void TMR1_DMACfg(uint8_t s, uint16_t startAddr, uint16_t endAddr, DMAModeTypeDef m);
+
+/**
+ * @brief   关闭 TMR1 PWM输出
+ */
+#define TMR1_PWMDisable()           (R8_TMR1_CTRL_MOD &= ~RB_TMR_OUT_EN)
+
+/**
+ * @brief   开启 TMR1 PWM输出
+ */
+#define TMR1_PWMEnable()           (R8_TMR1_CTRL_MOD |= RB_TMR_OUT_EN)
 
 /**
  * @brief   关闭 TMR1
@@ -398,6 +420,16 @@ void TMR2_CapInit(CapModeTypeDef cap);
 void TMR2_DMACfg(uint8_t s, uint16_t startAddr, uint16_t endAddr, DMAModeTypeDef m);
 
 /**
+ * @brief   关闭 TMR2 PWM输出
+ */
+#define TMR2_PWMDisable()           (R8_TMR2_CTRL_MOD &= ~RB_TMR_OUT_EN)
+
+/**
+ * @brief   开启 TMR2 PWM输出
+ */
+#define TMR2_PWMEnable()           (R8_TMR2_CTRL_MOD |= RB_TMR_OUT_EN)
+
+/**
  * @brief   关闭 TMR2
  */
 #define TMR2_Disable()         (R8_TMR2_CTRL_MOD &= ~RB_TMR_COUNT_EN)
@@ -513,6 +545,16 @@ void TMR3_CapInit(CapModeTypeDef cap);
  * @return  当前已捕获数据个数
  */
 #define TMR3_CAPDataCounter()    R8_TMR3_FIFO_COUNT
+
+/**
+ * @brief   关闭 TMR3 PWM输出
+ */
+#define TMR3_PWMDisable()           (R8_TMR3_CTRL_MOD &= ~RB_TMR_OUT_EN)
+
+/**
+ * @brief   开启 TMR3 PWM输出
+ */
+#define TMR3_PWMEnable()           (R8_TMR3_CTRL_MOD |= RB_TMR_OUT_EN)
 
 /**
  * @brief   关闭 TMR3

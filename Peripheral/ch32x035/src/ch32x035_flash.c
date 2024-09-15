@@ -2,7 +2,7 @@
  * File Name          : ch32x035_flash.c
  * Author             : WCH
  * Version            : V1.0.0
- * Date               : 2023/11/23
+ * Date               : 2023/12/26
  * Description        : This file provides all the FLASH firmware functions.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -12,7 +12,7 @@
 #include "ch32x035_flash.h"
 
 /* Flash Access Control Register bits */
-#define ACR_LATENCY_Mask           ((uint32_t)0x00000038)
+#define ACR_LATENCY_Mask           ((uint32_t)0xFFFFFFFC)
 
 /* Flash Control Register bits */
 #define CR_PER_Set                 ((uint32_t)0x00000002)
@@ -57,7 +57,7 @@
 #define EraseTimeout               ((uint32_t)0x000B0000)
 #define ProgramTimeout             ((uint32_t)0x00005000)
 
-/* Flash Program Vaild Address */
+/* Flash Program Valid Address */
 #define ValidAddrStart             (FLASH_BASE)
 #define ValidAddrEnd               (FLASH_BASE + 0xF800)
 

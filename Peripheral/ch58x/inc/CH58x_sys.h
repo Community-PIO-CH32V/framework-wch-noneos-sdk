@@ -4,8 +4,10 @@
  * Version            : V1.2
  * Date               : 2021/11/17
  * Description
+ *********************************************************************************
  * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
- * SPDX-License-Identifier: Apache-2.0
+ * Attention: This software (modified or not) and binary are used for 
+ * microcontroller manufactured by Nanjing Qinheng Microelectronics.
  *******************************************************************************/
 
 #ifndef __CH58x_SYS_H__
@@ -165,17 +167,35 @@ void mDelayuS(uint16_t t);
  */
 void mDelaymS(uint16_t t);
 
-/* Safe access */
+extern volatile uint32_t IRQ_STA;
+
+/**
+ * @brief Enter safe access mode.
+ * 
+ * @NOTE: After enter safe access mode, about 16 system frequency cycles 
+ * are in safe mode, and one or more secure registers can be rewritten 
+ * within the valid period. The safe mode will be automatically 
+ * terminated after the above validity period is exceeded.
+ */
  __attribute__((always_inline)) static inline void sys_safe_access_enable(void)
 {
-    R8_SAFE_ACCESS_SIG = SAFE_ACCESS_SIG1;
-    R8_SAFE_ACCESS_SIG = SAFE_ACCESS_SIG2;
-    SAFEOPERATE;
+   if(read_csr(0x800)&0x08)
+   {
+       IRQ_STA = read_csr(0x800);
+       write_csr(0x800, (IRQ_STA&(~0x08)));
+   }
+   SAFEOPERATE;
+   R8_SAFE_ACCESS_SIG = SAFE_ACCESS_SIG1;
+   R8_SAFE_ACCESS_SIG = SAFE_ACCESS_SIG2;
+   SAFEOPERATE;
 }
 
 __attribute__((always_inline)) static inline void sys_safe_access_disable(void)
 {
-    R8_SAFE_ACCESS_SIG = 0;
+   R8_SAFE_ACCESS_SIG = 0;
+   write_csr(0x800, read_csr(0x800)|(IRQ_STA&0x08));
+   IRQ_STA = 0;
+   SAFEOPERATE;
 }
 
 #ifdef __cplusplus

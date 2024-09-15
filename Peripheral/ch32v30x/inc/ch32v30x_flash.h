@@ -2,7 +2,7 @@
 * File Name          : ch32v30x_flash.h
 * Author             : WCH
 * Version            : V1.0.0
-* Date               : 2021/06/06
+* Date               : 2024/05/24
 * Description        : This file contains all the functions prototypes for the FLASH  
 *                      firmware library.
 *********************************************************************************

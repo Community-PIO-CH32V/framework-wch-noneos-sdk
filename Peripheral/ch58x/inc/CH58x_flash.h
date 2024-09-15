@@ -4,8 +4,10 @@
  * Version            : V1.2
  * Date               : 2021/11/17
  * Description
+ *********************************************************************************
  * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
- * SPDX-License-Identifier: Apache-2.0
+ * Attention: This software (modified or not) and binary are used for 
+ * microcontroller manufactured by Nanjing Qinheng Microelectronics.
  *******************************************************************************/
 
 #ifndef __CH58x_FLASH_H__
@@ -32,6 +34,8 @@ UINT8 UserOptionByteConfig(FunctionalState RESET_EN, FunctionalState BOOT_PIN, F
 UINT8 UserOptionByteClose_SWD(void);
 
 void UserOptionByte_Active(void);
+
+void GET_UNIQUE_ID(uint8_t *Buffer);
 
 #ifdef __cplusplus
 }
