@@ -48,7 +48,7 @@
 #endif
 
 // Fixes ch32v10x_pwr.c compilation by declaring these functions
-#include "Debug.h"
+#include "debug.h"
 
 #endif /* __CH32V10x_CONF_H */
 
