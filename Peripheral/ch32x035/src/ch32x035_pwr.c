@@ -12,7 +12,16 @@
 #include "ch32x035_pwr.h"
 #include "ch32x035_rcc.h"
 // Fixes ch32x05_pwr.c compilation by declaring these functions
-#include "debug.h"
+// Only PWR_VDD_SupplyVoltage() needs this function for a delay
+// Most users won't call this function. In a build where
+// board_build.use_builtin_debug_code = no
+// this will still allow us to build the code if the function above
+// is not called. Before, we always failed compilation.
+// still leaves a possibility that the debug code is deactivated and
+// the delay functions were implemented differently or have a different signuature,
+// but this probability is negligable.
+void Delay_Init(void);
+void Delay_Us(uint32_t n);
 
 /* PWR registers bit mask */
 /* CTLR register bit mask */
