@@ -2,7 +2,7 @@
 * File Name          : startup_ch32v30x_D8C.s
 * Author             : WCH
 * Version            : V1.0.1
-* Date               : 203/11/11
+* Date               : 2025/04/06
 * Description        : CH32V307x-CH32V305x vector table for eclipse toolchain.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -85,7 +85,7 @@ _vector_base:
     .word   TIM8_TRG_COM_IRQHandler    /* TIM8 Trigger and Commutation */
     .word   TIM8_CC_IRQHandler         /* TIM8 Capture Compare */
     .word   RNG_IRQHandler             /* RNG */
-    .word   FSMC_IRQHandler            /* FSMC */
+    .word   0
     .word   SDIO_IRQHandler            /* SDIO */
     .word   TIM5_IRQHandler            /* TIM5 */
     .word   SPI3_IRQHandler            /* SPI3 */
@@ -104,7 +104,7 @@ _vector_base:
     .word   CAN2_RX0_IRQHandler        /* CAN2 RX0 */
     .word   CAN2_RX1_IRQHandler        /* CAN2 RX1 */
     .word   CAN2_SCE_IRQHandler        /* CAN2 SCE */
-    .word   OTG_FS_IRQHandler          /* OTGFS */
+    .word   USBFS_IRQHandler           /* USBFS */
     .word   USBHSWakeup_IRQHandler     /* USBHS Wakeup */
     .word   USBHS_IRQHandler           /* USBHS */
     .word   DVP_IRQHandler             /* DVP */
@@ -183,7 +183,6 @@ _vector_base:
     .weak   TIM8_TRG_COM_IRQHandler    /* TIM8 Trigger and Commutation */
     .weak   TIM8_CC_IRQHandler         /* TIM8 Capture Compare */
     .weak   RNG_IRQHandler             /* RNG */
-    .weak   FSMC_IRQHandler            /* FSMC */
     .weak   SDIO_IRQHandler            /* SDIO */
     .weak   TIM5_IRQHandler            /* TIM5 */
     .weak   SPI3_IRQHandler            /* SPI3 */
@@ -202,7 +201,7 @@ _vector_base:
     .weak   CAN2_RX0_IRQHandler        /* CAN2 RX0 */
     .weak   CAN2_RX1_IRQHandler        /* CAN2 RX1 */
     .weak   CAN2_SCE_IRQHandler        /* CAN2 SCE */
-    .weak   OTG_FS_IRQHandler          /* OTGFS */
+    .weak   USBFS_IRQHandler           /* USBFS */
     .weak   USBHSWakeup_IRQHandler     /* USBHS Wakeup */
     .weak   USBHS_IRQHandler           /* USBHS */
     .weak   DVP_IRQHandler             /* DVP */
@@ -279,7 +278,6 @@ TIM8_UP_IRQHandler:
 TIM8_TRG_COM_IRQHandler:
 TIM8_CC_IRQHandler:
 RNG_IRQHandler:
-FSMC_IRQHandler:
 SDIO_IRQHandler:
 TIM5_IRQHandler:
 SPI3_IRQHandler:
@@ -298,7 +296,7 @@ CAN2_TX_IRQHandler:
 CAN2_RX0_IRQHandler:
 CAN2_RX1_IRQHandler:
 CAN2_SCE_IRQHandler:
-OTG_FS_IRQHandler:
+USBFS_IRQHandler:
 USBHSWakeup_IRQHandler:
 USBHS_IRQHandler:
 DVP_IRQHandler:
@@ -322,28 +320,28 @@ DMA2_Channel11_IRQHandler:
 1:
 	j 1b
 
-    .section	.text.handle_reset,"ax",@progbits
-    .weak	handle_reset
-    .align	1
+	.section	.text.handle_reset,"ax",@progbits
+	.weak	handle_reset
+	.align	1
 handle_reset:
 .option push 
 .option	norelax 
-    la gp, __global_pointer$
+	la gp, __global_pointer$
 .option	pop 
+
+	la sp, _eusrstack 
+
+/* Load data section from flash to RAM */
+	la a0, _data_lma
+	la a1, _data_vma
+	la a2, _edata
+	bgeu a1, a2, 2f
 1:
-    la sp, _eusrstack 
-2:
-    /* Load data section from flash to RAM */
-    la a0, _data_lma
-    la a1, _data_vma
-    la a2, _edata
-    bgeu a1, a2, 2f
-1:
-    lw t0, (a0)
-    sw t0, (a1)
-    addi a0, a0, 4
-    addi a1, a1, 4
-    bltu a1, a2, 1b
+	lw t0, (a0)
+	sw t0, (a1)
+	addi a0, a0, 4
+	addi a1, a1, 4
+	bltu a1, a2, 1b
 2:
     /* Clear bss section */
     la a0, _sbss
@@ -365,14 +363,14 @@ handle_reset:
     /* Enable floating point and interrupt */
     /* Generate the value 0x7880, which are the MPIE, MPP and FS bits to set in mstatus. */
     li t0, 0x7800
-    csrs mstatus, t0
+    csrw mstatus, t0
     #else /* regular */
     li t0, 0x0b
     csrw 0x804, t0
 
     /* Enable floating point and interrupt */
     li t0, 0x6088           
-    csrs mstatus, t0
+    csrw mstatus, t0
     #endif
 
      la t0, _vector_base
