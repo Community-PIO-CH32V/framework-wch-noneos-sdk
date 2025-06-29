@@ -66,9 +66,5 @@ typedef struct
 void NVIC_PriorityGroupConfig(uint32_t NVIC_PriorityGroup);
 void NVIC_Init(NVIC_InitTypeDef* NVIC_InitStruct);
 
-#ifdef __cplusplus
-}
-#endif
-
 #endif /* __CH32V10x_MISC_H */
 
