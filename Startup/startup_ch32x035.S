@@ -2,7 +2,7 @@
 ;* File Name          : startup_ch32x035.s
 ;* Author             : WCH
 ;* Version            : V1.0.1
-;* Date               : 2023/11/11
+;* Date               : 2023/12/06
 ;* Description        : vector table for eclipse toolchain.
 ;*********************************************************************************
 ;* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -215,14 +215,14 @@ handle_reset:
 	csrw 0x804, t0
 /* Enable global interrupt and configure privileged mode */
    	li t0, 0x1800           
-   	csrs mstatus, t0
+   	csrw mstatus, t0
     #else /* regular */
 /* Enable interrupt nesting and hardware stack */
 	li t0, 0x3
 	csrw 0x804, t0
 /* Enable global interrupt and configure privileged mode */
    	li t0, 0x88           
-   	csrs mstatus, t0
+   	csrw mstatus, t0
     #endif
 
 /* Configure the interrupt vector table recognition mode and entry address mode */

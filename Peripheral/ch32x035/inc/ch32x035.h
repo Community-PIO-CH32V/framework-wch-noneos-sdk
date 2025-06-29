@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
  * File Name          : ch32x035.h
  * Author             : WCH
- * Version            : V1.0.1
- * Date               : 2024/06/07
+ * Version            : V1.0.2
+ * Date               : 2025/03/10
  * Description        : CH32X035 Device Peripheral Access Layer Header File.
 *********************************************************************************
 * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -23,7 +23,7 @@ extern "C" {
 
 /* Standard Peripheral Library version number */
 #define __STDPERIPH_VERSION_MAIN   (0x01) /* [15:8] main version */
-#define __STDPERIPH_VERSION_SUB    (0x07) /* [7:0] sub version */
+#define __STDPERIPH_VERSION_SUB    (0x09) /* [7:0] sub version */
 #define __STDPERIPH_VERSION        ((__STDPERIPH_VERSION_MAIN << 8)\
                                     |(__STDPERIPH_VERSION_SUB << 0))
 
@@ -37,7 +37,7 @@ typedef enum IRQn
     Ecall_M_Mode_IRQn = 5,     /* 5 Ecall M Mode Interrupt                             */
     Ecall_U_Mode_IRQn = 8,     /* 8 Ecall U Mode Interrupt                             */
     Break_Point_IRQn = 9,      /* 9 Break Point Interrupt                              */
-    SysTicK_IRQn = 12,         /* 12 System timer Interrupt                            */
+    SysTick_IRQn = 12,         /* 12 System timer Interrupt                            */
     Software_IRQn = 14,        /* 14 software Interrupt                                */
 
     /******  RISC-V specific Interrupt Numbers *********************************************************/
@@ -82,6 +82,7 @@ typedef enum IRQn
 } IRQn_Type;
 
 #define HardFault_IRQn    EXC_IRQn
+#define SysTicK_IRQn      SysTick_IRQn
 
 #include <stdint.h>
 #include "core_riscv.h"
@@ -1610,7 +1611,6 @@ typedef struct
 /*******************  Bit definition for FLASH_CTLR register  *******************/
 #define FLASH_CTLR_PER                          ((uint32_t)0x00000002) /* Sector Erase 4K */
 #define FLASH_CTLR_MER                          ((uint32_t)0x00000004) /* Mass Erase */
-#define FLASH_CTLR_OPTPG                        ((uint32_t)0x00000010) /* Option Byte Programming */
 #define FLASH_CTLR_OPTER                        ((uint32_t)0x00000020) /* Option Byte Erase */
 #define FLASH_CTLR_STRT                         ((uint32_t)0x00000040) /* Start */
 #define FLASH_CTLR_LOCK                         ((uint32_t)0x00000080) /* Lock */
