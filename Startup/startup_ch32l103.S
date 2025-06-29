@@ -1,8 +1,8 @@
 ;/********************************** (C) COPYRIGHT *******************************
 ;* File Name          : startup_ch32l103.s
 ;* Author             : WCH
-;* Version            : V1.0.0
-;* Date               : 2024/05/06
+;* Version            : V1.0.2
+;* Date               : 2025/04/14
 ;* Description        : CH32L103 vector table for eclipse toolchain.
 ;*********************************************************************************
 ;* Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -58,7 +58,7 @@ _vector_base:
     .word   ADC_IRQHandler             /* ADC */
     .word   USB_HP_CAN1_TX_IRQHandler  /* USB HP and CAN1 TX */
     .word   USB_LP_CAN1_RX0_IRQHandler /* USB LP and CAN1RX0 */
-    .word   CAN1_RX1_IRQHandler        /* CAN1 RX1 */
+    .word   0
     .word   CAN1_SCE_IRQHandler        /* CAN1 SCE */
     .word   EXTI9_5_IRQHandler         /* EXTI Line 9..5 */
     .word   TIM1_BRK_IRQHandler        /* TIM1 Break */
@@ -121,7 +121,6 @@ _vector_base:
     .weak   ADC_IRQHandler             /* ADC */
     .weak   USB_HP_CAN1_TX_IRQHandler  /* USB HP and CAN1 TX */
     .weak   USB_LP_CAN1_RX0_IRQHandler /* USB LP and CAN1RX0 */
-    .weak   CAN1_RX1_IRQHandler        /* CAN1 RX1 */
     .weak   CAN1_SCE_IRQHandler        /* CAN1 SCE */
     .weak   EXTI9_5_IRQHandler         /* EXTI Line 9..5 */
     .weak   TIM1_BRK_IRQHandler        /* TIM1 Break */
@@ -181,7 +180,6 @@ DMA1_Channel7_IRQHandler:
 ADC_IRQHandler:
 USB_HP_CAN1_TX_IRQHandler:
 USB_LP_CAN1_RX0_IRQHandler:
-CAN1_RX1_IRQHandler:
 CAN1_SCE_IRQHandler:
 EXTI9_5_IRQHandler:
 TIM1_BRK_IRQHandler:
@@ -223,9 +221,8 @@ handle_reset:
 .option	norelax 
 	la gp, __global_pointer$
 .option	pop 
-1:
 	la sp, _eusrstack 
-2:
+
 /* Load data section from flash to RAM */
 	la a0, _data_lma
 	la a1, _data_vma
@@ -291,5 +288,4 @@ handle_reset:
     #endif
 	csrw mepc, t0
 	mret
-
 

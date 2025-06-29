@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
  * File Name          : ch32l103_lptim.c
  * Author             : WCH
- * Version            : V1.0.0
- * Date               : 2023/07/08
+ * Version            : V1.0.2
+ * Date               : 2025/04/18
  * Description        : This file provides all the TIM firmware functions.
  *********************************************************************************
  * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -58,9 +58,8 @@ void LPTIM_TimeBaseInit(LPTIM_TimeBaseInitTypeDef *LPTIM_TimeBaseInitStruct)
     temp1 |= LPTIM_TimeBaseInitStruct->LPTIM_ClockSource | LPTIM_TimeBaseInitStruct->LPTIM_ClockSampleTime  \
              | LPTIM_TimeBaseInitStruct->LPTIM_TriggerSampleTime | LPTIM_TimeBaseInitStruct->LPTIM_ClockPrescaler  \
              | LPTIM_TimeBaseInitStruct->LPTIM_TriggerSource | LPTIM_TimeBaseInitStruct->LPTIM_ExTriggerPolarity  \
-             | LPTIM_TimeBaseInitStruct->LPYIM_OutputPolarity | LPTIM_TimeBaseInitStruct->LPYIM_UpdateMode  \
-             | LPTIM_TimeBaseInitStruct->LPYIM_UpdateMode | LPTIM_TimeBaseInitStruct->LPTIM_CountSource  \
-             | LPTIM_TimeBaseInitStruct->LPTIM_InClockSource | LPTIM_TimeBaseInitStruct->LPTIM_CountSource  \
+             | LPTIM_TimeBaseInitStruct->LPTIM_OutputPolarity | LPTIM_TimeBaseInitStruct->LPTIM_UpdateMode  \
+             | LPTIM_TimeBaseInitStruct->LPTIM_CountSource | LPTIM_TimeBaseInitStruct->LPTIM_InClockSource \
              | (LPTIM_TimeBaseInitStruct->LPTIM_TimeOut << 19) | (LPTIM_TimeBaseInitStruct->LPTIM_OnePulseMode << 20)  \
              | (LPTIM_TimeBaseInitStruct->LPTIM_Encoder << 24) | (LPTIM_TimeBaseInitStruct->LPTIM_ForceOutHigh << 27);
 
@@ -93,8 +92,8 @@ void LPTIM_TimeBaseStructInit(LPTIM_TimeBaseInitTypeDef *LPTIM_TimeBaseInitStruc
     LPTIM_TimeBaseInitStruct->LPTIM_ExTriggerPolarity = LPTIM_ExTriggerPolarity_Disable;
     LPTIM_TimeBaseInitStruct->LPTIM_TimeOut = DISABLE;
     LPTIM_TimeBaseInitStruct->LPTIM_OnePulseMode = DISABLE;
-    LPTIM_TimeBaseInitStruct->LPYIM_OutputPolarity = LPYIM_OutputPolarity_High;
-    LPTIM_TimeBaseInitStruct->LPYIM_UpdateMode = LPYIM_UpdateMode0;
+    LPTIM_TimeBaseInitStruct->LPTIM_OutputPolarity = LPTIM_OutputPolarity_High;
+    LPTIM_TimeBaseInitStruct->LPTIM_UpdateMode = LPTIM_UpdateMode0;
     LPTIM_TimeBaseInitStruct->LPTIM_CountSource = LPTIM_CountSource_Internal;
     LPTIM_TimeBaseInitStruct->LPTIM_Encoder = DISABLE;
     LPTIM_TimeBaseInitStruct->LPTIM_InClockSource = LPTIM_InClockSource_PCLK1;
@@ -104,7 +103,7 @@ void LPTIM_TimeBaseStructInit(LPTIM_TimeBaseInitTypeDef *LPTIM_TimeBaseInitStruc
     LPTIM_TimeBaseInitStruct->LPTIM_PWMOut = DISABLE;
     LPTIM_TimeBaseInitStruct->LPTIM_CounterDirIndicat = DISABLE;
     LPTIM_TimeBaseInitStruct->LPTIM_Pulse = 0;
-    LPTIM_TimeBaseInitStruct->LPTIM_Period = 0x0001;
+    LPTIM_TimeBaseInitStruct->LPTIM_Period = 0xFFFF;
 }
 
 /*********************************************************************
@@ -120,10 +119,10 @@ void LPTIM_CounterDirIndicat_Cmd(FunctionalState NewState)
 {
     if(NewState)
     {
-        LPTIM->CR |= (1<<3);
+        LPTIM->CR |= LPTIM_CR_DIR_EXTEN;
     }
     else{
-        LPTIM->CR &= ~(1<<3);
+        LPTIM->CR &= ~LPTIM_CR_DIR_EXTEN;
     }
 }
 
@@ -140,10 +139,10 @@ void LPTIM_OutCmd(FunctionalState NewState)
 {
     if(NewState)
     {
-        LPTIM->CR |= (1<<3);
+        LPTIM->CR |= LPTIM_CR_OUTEN;
     }
     else{
-        LPTIM->CR &= ~(1<<3);
+        LPTIM->CR &= ~LPTIM_CR_OUTEN;
     }
 }
 
@@ -160,10 +159,10 @@ void LPTIM_Cmd(FunctionalState NewState)
 {
     if(NewState)
     {
-        LPTIM->CR |= (1<<0);
+        LPTIM->CR |= LPTIM_CR_ENABLE;
     }
     else{
-        LPTIM->CR &= ~(1<<0);
+        LPTIM->CR &= ~LPTIM_CR_ENABLE;
     }
 }
 
@@ -178,7 +177,7 @@ void LPTIM_Cmd(FunctionalState NewState)
  */
 uint16_t LPTIM_GetCounter(void)
 {
-    return LPTIM->CNT;
+    return (uint16_t)LPTIM->CNT;
 }
 
 /*********************************************************************
@@ -220,7 +219,7 @@ void LPTIM_SetCompare(uint16_t Compare)
  */
 uint16_t LPTIM_GetCapture(void)
 {
-    return LPTIM->CMP;
+    return (uint16_t)LPTIM->CMP;
 }
 
 /*********************************************************************
@@ -312,7 +311,6 @@ void LPTIM_ClearFlag(uint32_t LPTIM_FLAG)
  * @brief   Checks whether the LPTIM interrupt has occurred or not.
  *
  * @param   LPTIM_IT - specifies the LPTIM interrupt source to check.
- *            LPTIM_FLAG_DIR_SYNC - LPTIM counter direction indicate Interrupt source.
  *            LPTIM_IT_DOWN - LPTIM counter down Interrupt source.
  *            LPTIM_IT_UP - LPTIM counter up Interrupt source.
  *            LPTIM_IT_ARROK - LPTIM be loaded success Interrupt source.
@@ -326,8 +324,10 @@ void LPTIM_ClearFlag(uint32_t LPTIM_FLAG)
 ITStatus LPTIM_GetITStatus(uint32_t LPTIM_IT)
 {
     ITStatus bitstatus = RESET;
+    uint32_t enablestatus = 0;
 
-    if((LPTIM->ISR & LPTIM_IT) != (uint32_t)RESET)
+    enablestatus = LPTIM->IER;
+    if(((LPTIM->ISR & LPTIM_IT) != (uint32_t)RESET) && enablestatus)
     {
         bitstatus = SET;
     }
