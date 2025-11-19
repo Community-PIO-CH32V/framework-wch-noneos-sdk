@@ -187,6 +187,16 @@ handle_reset:
     ori t0, t0, 3
 	csrw mtvec, t0
 
+    #if defined(__PIO_CPP_SUPPORT__)
+    /* register fini (destructor array) call at exit if wanted (bloats up RAM+Flash) */
+    #if defined(__PIO_CPP_CALL_FINI__)
+    la a0,__libc_fini_array
+    call atexit
+    #endif
+    /* call into C++ constructors now */
+    call __libc_init_array
+    #endif
+
 	la t0, main
 	csrw mepc, t0
 	
