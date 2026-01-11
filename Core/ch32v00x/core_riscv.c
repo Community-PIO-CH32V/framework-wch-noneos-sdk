@@ -284,8 +284,15 @@ uint32_t __get_SP(void)
  */
 __attribute__( (section(".highcode")) ) void WFE(uint32_t t)
 {
-  asm volatile ("wfi");
-  asm volatile ("1:addi a0, a0, -1\n\t" \
-                "bnez a0, 1b\n\t"  \
-          );
+    /* Force t into RISC-V a0 so the delay loop works */
+    register uint32_t a0 asm("a0") = t;
+
+    asm volatile (
+        "wfi\n"
+        "1: addi a0, a0, -1\n"
+        "   bnez a0, 1b\n"
+        :
+        : "r"(a0)
+        : "memory"
+    );
 }
