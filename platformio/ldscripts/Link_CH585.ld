@@ -1,20 +1,18 @@
 ENTRY( _start )
 
-__stack_size = #stack_size;
+__stack_size = 512;
 
 PROVIDE( _stack_size = __stack_size );
 
-
 MEMORY
 {
-	FLASH (rx) : ORIGIN = #flash_start, LENGTH = #flash
-	RAM (xrw) : ORIGIN = 0x20000000, LENGTH = #ram
+	FLASH (rx) : ORIGIN = 0x00000000, LENGTH = 448K
+	RAM (xrw) : ORIGIN = 0x20000000, LENGTH = 128K
+ /*	RAM (xrw) : ORIGIN = 0x20000000, LENGTH = 96K */ /*CH584*/
 }
-
 
 SECTIONS
 {
-
 	.init :
 	{
 		_sinit = .;
@@ -23,13 +21,12 @@ SECTIONS
 		. = ALIGN(4);
 		_einit = .;
 	} >FLASH AT>FLASH
-
-  .vector :
-  {
-      *(.vector);
-	  . = ALIGN(64);
-  } >FLASH AT>FLASH
-
+	
+ /*   .vector :
+    {
+        *(.vector);
+    } >FLASH AT>FLASH */
+        
     .highcode_initlalign :  
     {       
         . = ALIGN(4);
@@ -65,39 +62,19 @@ SECTIONS
 		. = ALIGN(4); 
         PROVIDE(_highcode_vma_end = .);
     } >RAM AT>FLASH
-
+     
 	.text :
 	{
 		. = ALIGN(4);
+		KEEP(*(SORT_NONE(.handle_reset)))
 		*(.text)
 		*(.text.*)
 		*(.rodata)
 		*(.rodata*)
+  *(.sdata2.*)
+		*(.glue_7)
+		*(.glue_7t)
 		*(.gnu.linkonce.t.*)
-		/* only needed for RT-Thread, goes unused by other frameworks. Only litte flash overhhead. */
-		 /* section information for finsh shell */
-		. = ALIGN(4);
-		__fsymtab_start = .;
-		KEEP(*(FSymTab))
-		__fsymtab_end = .;
-		. = ALIGN(4);
-		__vsymtab_start = .;
-		KEEP(*(VSymTab))
-		__vsymtab_end = .;
-		. = ALIGN(4);
-
-		/* section information for initial. */
-		. = ALIGN(4);
-		__rt_init_start = .;
-		KEEP(*(SORT(.rti_fn*)))
-		__rt_init_end = .;
-		. = ALIGN(4);
-
-		/* section information for modules */
-		. = ALIGN(4);
-		__rtmsymtab_start = .;
-		KEEP(*(RTMSymTab))
-		__rtmsymtab_end = .;
 		. = ALIGN(4);
 	} >FLASH AT>FLASH 
 
@@ -164,12 +141,6 @@ SECTIONS
 	  KEEP (*(.dtors))
 	} >FLASH AT>FLASH 
 
-	.dalign :
-	{
-		. = ALIGN(4);
-		PROVIDE(_data_vma = .);
-	} >RAM AT>FLASH	
-
 	.dlalign :
 	{
 		. = ALIGN(4); 
@@ -178,13 +149,14 @@ SECTIONS
 
 	.data :
 	{
+		. = ALIGN(4); 
+		PROVIDE(_data_vma = .);
     	*(.gnu.linkonce.r.*)
     	*(.data .data.*)
     	*(.gnu.linkonce.d.*)
 		. = ALIGN(8);
     	PROVIDE( __global_pointer$ = . + 0x800 );
     	*(.sdata .sdata.*)
-		*(.sdata2.*)
     	*(.gnu.linkonce.s.*)
     	. = ALIGN(8);
     	*(.srodata.cst16)
@@ -211,18 +183,16 @@ SECTIONS
 
 	PROVIDE( _end = _ebss);
 	PROVIDE( end = . );
-
+	
     .stack ORIGIN(RAM) + LENGTH(RAM) - __stack_size :
     {
-        PROVIDE( _heap_end = . );    
+        PROVIDE( _heap_end = . );   
         . = ALIGN(4);
         PROVIDE(_susrstack = . );
         . = . + __stack_size;
         PROVIDE( _eusrstack = .);
-		/* goes unused for every firmware but FreeRTOS enabled ones */
-		__freertos_irq_stack_top = .;
+        PROVIDE( __freertos_irq_stack_top = .);
     } >RAM 
-
 }
 
 
