@@ -193,10 +193,13 @@ SECTIONS
 
 	PROVIDE( _end = _ebss);
 	PROVIDE( end = . );
+	PROVIDE( _heap_start = . );  
+	PROVIDE( __heap_start = . );  
 
     .stack ORIGIN(RAM) + LENGTH(RAM) - __stack_size :
     {
         PROVIDE( _heap_end = . );    
+        PROVIDE( __heap_end = . );  
         . = ALIGN(4);
         PROVIDE(_susrstack = . );
         . = . + __stack_size;
