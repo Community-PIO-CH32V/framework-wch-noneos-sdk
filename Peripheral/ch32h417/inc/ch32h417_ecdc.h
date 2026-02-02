@@ -30,8 +30,8 @@ typedef enum
 /* ECDCBlockCipherMode definition */
 typedef enum
 {
-    ECDCBlockCipherMode_CTR = 0,
-    ECDCBlockCipherMode_ECB
+    ECDCBlockCipherMode_ECB = 0,
+    ECDCBlockCipherMode_CTR
 } ECDC_BlockCipherMode_TypeDef;
 
 /* ECDCKeyLen definition */
