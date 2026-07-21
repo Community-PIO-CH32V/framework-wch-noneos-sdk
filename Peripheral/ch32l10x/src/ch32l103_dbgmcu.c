@@ -11,6 +11,9 @@
  *******************************************************************************/
 #include "ch32l103_dbgmcu.h"
 
+/* from ch32l103_gpio.c */
+extern uint32_t CHIPID;
+
 #define IDCODE_DEVID_MASK    ((uint32_t)0x0000FFFF)
 
 

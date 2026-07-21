@@ -11,6 +11,9 @@
  *******************************************************************************/
 #include "ch32l103_opa.h"
 
+/* from ch32l103_gpio.c */
+extern uint32_t OPA_Trim;
+
 /* FLASH Keys */
 #define OPCM_KEY1                 ((uint32_t)0x45670123)
 #define OPCM_KEY2                 ((uint32_t)0xCDEF89AB)

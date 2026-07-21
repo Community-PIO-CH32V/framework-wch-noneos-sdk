@@ -12,6 +12,10 @@
 #include "ch32l103_adc.h"
 #include "ch32l103_rcc.h"
 
+/* from ch32l103_gpio.c */
+extern uint16_t ADC_Trim;
+extern uint32_t TS_Val;
+
 /* CFG Keys */
 #define CFG_KEY1                         ((uint32_t)0x45670123)
 #define CFG_KEY2                         ((uint32_t)0xCDEF89AB)
