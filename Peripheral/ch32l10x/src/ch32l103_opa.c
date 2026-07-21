@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
  * File Name          : ch32l103_opa.c
  * Author             : WCH
- * Version            : V1.0.1
- * Date               : 2025/03/19
+ * Version            : V1.0.2
+ * Date               : 2026/04/23
  * Description        : This file provides all the OPA firmware functions.
  *********************************************************************************
  * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -40,7 +40,7 @@ void OPCM_Unlock(void)
  */
 void OPCM_Lock(void)
 {
-    OPA->CTLR1 |= (1<<7);
+    OPA->CFGR1 |= (1<<7);
 }
 
 /*********************************************************************

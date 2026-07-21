@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
  * File Name          : ch32l103_can.c
  * Author             : WCH
- * Version            : V1.0.1
- * Date               : 2025/04/14
+ * Version            : V1.0.2
+ * Date               : 2026/06/05
  * Description        : This file provides all the CAN firmware functions.
  *********************************************************************************
  * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -1517,11 +1517,24 @@ ErrorStatus CANFD_Receive(CAN_TypeDef* CANx, uint8_t FIFONumber, CanFDRxMsg* RxM
 
     adr = CANx->CANFD_DMA_R[FIFONumber] + 0x20000000;
 
-    for(i=0; i<RxMessage->DLC; i++)
-    {
-        RxMessage->Data[i] = *((uint8_t*)adr++);
-    }
-
+	if(len <= 8 )
+	{
+		RxMessage->Data[0] = (uint8_t)0xFF & CANx->sFIFOMailBox[FIFONumber].RXMDLR;
+		RxMessage->Data[1] = (uint8_t)0xFF & (CANx->sFIFOMailBox[FIFONumber].RXMDLR >> 8);
+		RxMessage->Data[2] = (uint8_t)0xFF & (CANx->sFIFOMailBox[FIFONumber].RXMDLR >> 16);
+		RxMessage->Data[3] = (uint8_t)0xFF & (CANx->sFIFOMailBox[FIFONumber].RXMDLR >> 24);
+		RxMessage->Data[4] = (uint8_t)0xFF & CANx->sFIFOMailBox[FIFONumber].RXMDHR;
+		RxMessage->Data[5] = (uint8_t)0xFF & (CANx->sFIFOMailBox[FIFONumber].RXMDHR >> 8);
+		RxMessage->Data[6] = (uint8_t)0xFF & (CANx->sFIFOMailBox[FIFONumber].RXMDHR >> 16);
+		RxMessage->Data[7] = (uint8_t)0xFF & (CANx->sFIFOMailBox[FIFONumber].RXMDHR >> 24);
+	}
+	else
+	{
+		for(i=0; i<RxMessage->DLC; i++)
+		{
+			RxMessage->Data[i] = *((uint8_t*)adr++);
+		}
+	}
     if (FIFONumber == CAN_FIFO0)
     {
         CANx->RFIFO0 |= CAN_RFIFO0_RFOM0;

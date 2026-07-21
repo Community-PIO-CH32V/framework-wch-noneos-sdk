@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
  * File Name          : ch32l103_bkp.h
  * Author             : WCH
- * Version            : V1.0.0
- * Date               : 2023/07/08
+ * Version            : V1.0.1
+ * Date               : 2025/05/06
  * Description        : This file contains all the functions prototypes for the
  *                      BKP firmware library.
  *********************************************************************************
@@ -40,10 +40,6 @@ extern "C" {
 #define BKP_DR8                           ((uint16_t)0x0020)
 #define BKP_DR9                           ((uint16_t)0x0024)
 #define BKP_DR10                          ((uint16_t)0x0028)
-#define BKP_DR11                          ((uint16_t)0x0040)
-#define BKP_DR12                          ((uint16_t)0x0044)
-#define BKP_DR13                          ((uint16_t)0x0048)
-
 
 void       BKP_DeInit(void);
 void       BKP_TamperPinLevelConfig(uint16_t BKP_TamperPinLevel);

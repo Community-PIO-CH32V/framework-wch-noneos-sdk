@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
  * File Name          : ch32l103_bkp.c
  * Author             : WCH
- * Version            : V1.0.0
- * Date               : 2023/07/08
+ * Version            : V1.0.1
+ * Date               : 2025/05/06
  * Description        : This file provides all the BKP firmware functions.
  *********************************************************************************
  * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -167,7 +167,7 @@ void BKP_WriteBackupRegister(uint16_t BKP_DR, uint16_t Data)
  * @brief   Reads data from the specified Data Backup Register.
  *
  * @param   BKP_DR - specifies the Data Backup Register.
- *            This parameter can be BKP_DRx where x=[1, 42].
+ *            This parameter can be BKP_DRx where x=[1, 10].
  *
  * @return  none
  */

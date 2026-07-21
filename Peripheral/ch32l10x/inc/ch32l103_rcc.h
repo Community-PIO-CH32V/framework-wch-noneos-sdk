@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
  * File Name          : ch32l103_rcc.h
  * Author             : WCH
- * Version            : V1.0.0
- * Date               : 2023/07/08
+ * Version            : V1.0.1
+ * Date               : 2025/05/06
  * Description        : This file provides all the RCC firmware functions.
  *********************************************************************************
  * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -191,7 +191,7 @@ void        RCC_PCLK1Config(uint32_t RCC_HCLK);
 void        RCC_PCLK2Config(uint32_t RCC_HCLK);
 void        RCC_ITConfig(uint8_t RCC_IT, FunctionalState NewState);
 void        RCC_USBCLKConfig(uint32_t RCC_USBCLKSource);
-void        RCC_ADCCLKConfig(uint32_t RCC_PCLK2);
+void        RCC_ADCCLKConfig(uint32_t ADC_CLK_S);
 void        RCC_LSEConfig(uint8_t RCC_LSE);
 void        RCC_LSICmd(FunctionalState NewState);
 void        RCC_RTCCLKConfig(uint32_t RCC_RTCCLKSource);
@@ -202,6 +202,7 @@ void        RCC_PB2PeriphClockCmd(uint32_t RCC_PB2Periph, FunctionalState NewSta
 void        RCC_PB1PeriphClockCmd(uint32_t RCC_PB1Periph, FunctionalState NewState);
 void        RCC_PB2PeriphResetCmd(uint32_t RCC_PB2Periph, FunctionalState NewState);
 void        RCC_PB1PeriphResetCmd(uint32_t RCC_PB1Periph, FunctionalState NewState);
+void        RCC_HBPeriphResetCmd(uint32_t RCC_HBPeriph, FunctionalState NewState);
 void        RCC_BackupResetCmd(FunctionalState NewState);
 void        RCC_ClockSecuritySystemCmd(FunctionalState NewState);
 void        RCC_MCOConfig(uint8_t RCC_MCO);

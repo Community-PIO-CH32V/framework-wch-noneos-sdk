@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
  * File Name          : system_ch32l103.c
  * Author             : WCH
- * Version            : V1.0.0
- * Date               : 2024/01/22
+ * Version            : V1.0.1
+ * Date               : 2026/03/11
  * Description        : Device Peripheral Access Layer System Source File.
  *********************************************************************************
  * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -427,8 +427,8 @@ static void SetSysClockTo72_HSE(void)
 {
   __IO uint32_t StartUpCounter = 0, HSEStatus = 0;
      
-  /* Flash 1 wait state */
-  FLASH->ACTLR = (uint32_t)FLASH_ACTLR_LATENCY_1;
+  /* Flash 2 wait state */
+  FLASH->ACTLR = (uint32_t)FLASH_ACTLR_LATENCY_2;
 
   RCC->CTLR |= ((uint32_t)RCC_HSEON);
  
@@ -654,8 +654,8 @@ static void SetSysClockTo56_HSI(void)
  */
 static void SetSysClockTo72_HSI(void)
 {
-    /* Flash 1 wait state */
-    FLASH->ACTLR = (uint32_t)FLASH_ACTLR_LATENCY_1;
+    /* Flash 2 wait state */
+    FLASH->ACTLR = (uint32_t)FLASH_ACTLR_LATENCY_2;
 
     EXTEN->EXTEN_CTR |= EXTEN_PLL_HSI_PRE;
 

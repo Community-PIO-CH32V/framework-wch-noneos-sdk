@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT  *******************************
  * File Name          : ch32l103_gpio.c
  * Author             : WCH
- * Version            : V1.0.0
- * Date               : 2024/11/06
+ * Version            : V1.0.1
+ * Date               : 2025/09/05
  * Description        : This file provides all the GPIO firmware functions.
  *********************************************************************************
  * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -603,7 +603,7 @@ void GPIO_IPD_Unused(void)
     chip =  *( uint32_t * )CHIPID_BASE & (~0x000000F0);
     switch(chip)
     {
-        case 0x10320700:     //CH32L103K8U6
+        case 0x10320700:     //CH32L103K8U
         {
             GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10\
                                           |GPIO_Pin_11|GPIO_Pin_12\
@@ -615,7 +615,7 @@ void GPIO_IPD_Unused(void)
             GPIO_Init(GPIOC, &GPIO_InitStructure);
             break;
         }
-        case 0x103D0700:     //CH32L103F8U6
+        case 0x103D0700:     //CH32L103F8U
         {
             GPIO_PinRemapConfig(GPIO_Remap_PD01, ENABLE);
             GPIO_InitStructure.GPIO_Pin = GPIO_Pin_15;
@@ -639,7 +639,7 @@ void GPIO_IPD_Unused(void)
             GPIO_Init(GPIOD, &GPIO_InitStructure);
             break;
         }
-        case 0x103B0700:     //CH32L103G8R6
+        case 0x103B0700:     //CH32L103G8R
         {
             GPIO_PinRemapConfig(GPIO_Remap_PD01, ENABLE);
             GPIO_InitStructure.GPIO_Pin = GPIO_Pin_15;
@@ -660,7 +660,7 @@ void GPIO_IPD_Unused(void)
             GPIO_Init(GPIOD, &GPIO_InitStructure);
             break;
         }
-        case 0x103A0700:     //CH32L103F8P6
+        case 0x103A0700:     //CH32L103F8P
         {
             GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8|GPIO_Pin_9\
                                           |GPIO_Pin_10|GPIO_Pin_15;
@@ -683,7 +683,7 @@ void GPIO_IPD_Unused(void)
             GPIO_Init(GPIOC, &GPIO_InitStructure);
             break;
         }
-        case 0x10310700:     //CH32L103C8T6
+        case 0x10310700:     //CH32L103C8T
         {
             break;
         }

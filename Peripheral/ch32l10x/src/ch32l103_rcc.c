@@ -799,6 +799,30 @@ void RCC_PB1PeriphResetCmd(uint32_t RCC_PB1Periph, FunctionalState NewState)
 }
 
 /*********************************************************************
+ * @fn      RCC_HBPeriphResetCmd
+ *
+ * @brief   Forces or releases High Speed HB (HB) peripheral reset.
+ *
+ * @param   RCC_HBPeriph - specifies the HB peripheral to reset.
+ *            RCC_HBPeriph_USBFS.
+ *            RCC_HBPeriph_USBPD.
+ *          NewState - ENABLE or DISABLE
+ *
+ * @return  none
+ */
+void RCC_HBPeriphResetCmd(uint32_t RCC_HBPeriph, FunctionalState NewState)
+{
+  if (NewState != DISABLE)
+  {
+    RCC->HBRSTR |= RCC_HBPeriph;
+  }
+  else
+  {
+    RCC->HBRSTR &= ~RCC_HBPeriph;
+  }
+}
+
+/*********************************************************************
  * @fn      RCC_BackupResetCmd
  *
  * @brief   Forces or releases the Backup domain reset.

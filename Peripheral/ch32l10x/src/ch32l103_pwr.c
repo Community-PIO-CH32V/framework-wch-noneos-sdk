@@ -1,8 +1,8 @@
 /********************************** (C) COPYRIGHT *******************************
  * File Name          : ch32l103_pwr.c
  * Author             : WCH
- * Version            : V1.0.0
- * Date               : 2024/01/22
+ * Version            : V1.0.1
+ * Date               : 2026/03/19
  * Description        : This file provides all the PWR firmware functions.
  *********************************************************************************
  * Copyright (c) 2021 Nanjing Qinheng Microelectronics Co., Ltd.
@@ -400,12 +400,13 @@ void PWR_EnterSTOPMode_RAM_LV(uint32_t PWR_Regulator, uint8_t PWR_STOPEntry)
 /*********************************************************************
  * @fn      PWR_LDO_LP_Cmd
  *
- * @brief   Enables or disables the LDO low power mode.
+ * @brief   Enables or Disables the LDO energy-saving mode, In the stop 
+ *          regular_LowPower mode, it is invalid and must remain Disable. 
  *
- * @param   NewState - new state of the LDO low power mode(ENABLE or DISABLE).
+ * @param   NewState - new state of the LDO energy-saving mode(ENABLE or DISABLE).
  *
  * @return  none
- */
+ */ 
 void PWR_LDO_LP_Cmd(FunctionalState NewState)
 {
     if(NewState)
@@ -421,14 +422,14 @@ void PWR_LDO_LP_Cmd(FunctionalState NewState)
 /*********************************************************************
  * @fn      PWR_STOPMode_Auto_LDO_LP_Cmd
  *
- * @brief   Enables or disables the LDO auto enter low power mode in
- *        stop mode.
+ * @brief   Enables or disables automatic entry into LDO energy-saving mode
+ *          in the stop regulator_ON mode.
  *
- * @param   NewState - new state of the LDO auto enter low power mode
- *        in stop mode(ENABLE or DISABLE).
- *
+ * @param   NewState - new state of the automatic entry into LDO energy-saving 
+ *          mode in the stop regulator_ON mode(ENABLE or DISABLE).
+ *        
  * @return  none
- */
+ */ 
 void PWR_STOPMode_Auto_LDO_LP_Cmd(FunctionalState NewState)
 {
     if(NewState)
