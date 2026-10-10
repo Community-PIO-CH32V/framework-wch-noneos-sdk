@@ -244,19 +244,35 @@ handle_reset:
 /* Configure nesting level */
 	li t0, 0x01
 	csrw 0xBC1, t0
+#if defined(__PIO_BUILD_FREERTOS__) || defined(__PIO_BUILD_HARMONY_LITEOS__) || defined(__PIO_BUILD_RT_THREAD__) || defined(__PIO_BUILD_TENCENT_OS__)
+/* Enable interrupt nesting and hardware stack */
+    li t0, 0x1f             /* INTSYSCR: full hw stack + nesting for RTOS */
+    csrw 0x804, t0
+/* Enable floating point, configure privileged mode
+   FS[14:13]=11 enables the FPU; MPP[12:11]=11 keeps Machine mode
+   so CSR instructions in the RTOS port work; MIE=0 until the scheduler starts */
+    li t0, 0x7800
+    csrw mstatus, t0
+#else
 /* Enable interrupt nesting and hardware stack */
     li t0, 0x07
     csrw 0x804, t0
 /* Enable floating point and global interrupt, configure privileged mode */
    	li t0, 0x6088
    	csrw mstatus, t0
+#endif
 /* Configure the interrupt vector table recognition mode and entry address mode */
  	la t0, _start
     ori t0, t0, 3           
 	csrw mtvec, t0
 
     jal  SystemInit
+	#if defined(__PIO_BUILD_RT_THREAD__)
+	/* RT-Thread has special entry point, it will call our main() later */
+	la t0, entry
+	#else
 	la t0, main
+	#endif
 	csrw mepc, t0
 	mret
 
